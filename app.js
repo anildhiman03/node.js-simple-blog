@@ -18,8 +18,10 @@ var expressValidator = require('express-validator');
 var monogo = require('mongodb');
 var db = require('monk')('localhost/nodeblog');
 
+//routes
 var index = require('./routes/index');
 var posts = require('./routes/posts');
+var categories = require('./routes/categories');
 
 var app = express();
 
@@ -81,6 +83,7 @@ app.use (function (req,res,next){
 
 app.use('/', index);
 app.use('/posts', posts);
+app.use('/categories',categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
