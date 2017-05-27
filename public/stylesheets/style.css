@@ -58,8 +58,8 @@ nav a{
 }
 
 nav a.current, nav a:hover {
-	background: #83c29;
-	color: #000;
+	background: #83cd39;
+	color: #fff;
 }
 a {
   color: #00B7FF;
