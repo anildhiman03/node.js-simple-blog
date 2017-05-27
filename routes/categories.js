@@ -5,6 +5,16 @@ var router = express.Router();
 var monogo = require('mongodb');
 var db = require('monk')('localhost/nodeblog');
 
+router.get('/show/:category', function(req, res, next) {
+	var post = db.get('post');
+
+	post.find({category:req.params.category},{},function(err,posts){
+		res.render('index',{
+			'title':req.params.category,
+			'posts' : posts
+		});
+	});
+});
 
 /* show Category page. */
 router.get('/add', function(req, res, next) {

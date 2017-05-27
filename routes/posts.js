@@ -3,11 +3,75 @@ var router = express.Router();
 
 // to upload file
 var multer = require('multer');
-var upload = multer({dest:'./uploads'});
+var upload = multer({dest:'./public/images'});
 
 //db connection
 var monogo = require('mongodb');
 var db = require('monk')('localhost/nodeblog');
+
+
+
+/* Save post comment. */
+router.post('/add-comment', function(req, res, next) {
+	
+	var name = req.body.name;
+	var email = req.body.email;
+	var postid = req.body.postid;
+	var body = req.body.body;
+	var comment_date = new Date();
+	
+	req.checkBody('name','name is required').notEmpty();
+	req.checkBody('email','email is required').notEmpty();
+	req.checkBody('email','Valid email is required').isEmail();
+	req.checkBody('body','body is required').notEmpty();
+	
+	var errors = req.validationErrors();
+	if (errors) {
+
+		var post = db.get('post');
+		post.findById(postid,function(err,post){
+			res.render('show',{
+				'title':'post detail',
+				'post' : post,
+				'errors' : errors
+			});
+		});
+	} else {
+		var comment = {
+			"name" : name,
+			"email" : email,
+			"body" : body,
+			"comment_date" : comment_date
+		}
+
+		var post = db.get('post');
+		post.update({
+			"_id":postid
+		},{
+			$push:{
+				"comment": comment
+			}
+		},function(error,document) {
+			if (error) throw err;
+			req.flash('success','comment posted successfully');
+			res.location('/posts/show/'+postid);
+			res.redirect('/posts/show/'+postid);
+		})
+	}
+});
+
+
+/* GET post. */
+router.get('/show/:id', function(req, res, next) {
+	var post = db.get('post');
+
+	post.findById(req.params.id,function(err,post){
+		res.render('show',{
+			'title':'post detail',
+			'post' : post
+		});
+	});
+});
 
 
 /* GET post. */

@@ -8,6 +8,7 @@ body {
 	text-align: center;
 	margin:auto;
 	display:block;
+	width: 100px;
 }
 
 .container{
@@ -139,4 +140,11 @@ ul.errors li{
     background-color: #f2dede;
     border-color: #ebccd1;
     list-style: none;
+}
+p.comment-body{
+	padding-left: 15px;
+    background: #ccc;
+}
+.comment{
+	margin-bottom: 10px;
 }

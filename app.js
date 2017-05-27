@@ -9,7 +9,7 @@ var session = require('express-session');
 
 // to upload file
 var multer = require('multer');
-var upload = multer({dest:'./uploads'});
+var upload = multer({dest:'./public/images'});
 
 var moment = require('moment');
 var expressValidator = require('express-validator');
@@ -25,6 +25,12 @@ var categories = require('./routes/categories');
 
 var app = express();
 
+
+// common method to substring text
+app.locals.truncateText = function (text,length) {
+  var trcutatedText = text.substring(0,length);
+  return trcutatedText;
+}
 
 // making moment to use globally to format date anywhere in project
 app.locals.moment = require('moment');
